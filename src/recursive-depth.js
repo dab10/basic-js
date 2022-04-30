@@ -16,19 +16,24 @@ class DepthCalculator {
 
   
   calculateDepth(arr) {
-    
-    let arr1 = [arr]; 
+    let count = 1;
+    let res = 1;
 
-        if(arr1.filter(i => i.constructor.name === "Array").length != 0){
-           res = 1 + this.calculateDepth([].concat(...arr1.filter(i => i.constructor.name === "Array")))
-            return res;
-         } else {
-           return 1;
-        } 
+    for (let i = 0; i < arr.length; i++) {
+      if (Array.isArray(arr[i])) {
+        count = count + this.calculateDepth(arr[i])
       }
- 
+      
+      if (count > res) {
+        res = count
+      } else {
+        res = res
+      }
+      count = 1
     }
-  
+    return res;
+  }
+}
 
 
 
