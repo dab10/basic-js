@@ -20,6 +20,11 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
+
+  constructor(reverse = true) {
+    this.reverse = !reverse;
+  }
+  
   encrypt(text, key) {
     if (text === undefined || key === undefined) {
       throw new Error('Incorrect arguments!')
@@ -32,19 +37,27 @@ class VigenereCipheringMachine {
     let abcCount = 26;
   
     let result = [];
+    text = text.toUpperCase()
+    key = key.toUpperCase()
   
     for (let i = 0; i < text.length; i++) {
       if (text[i] === ' ') {
         result.push(text[i]);
+        key = key.substr(0, i) + ' ' + key.substr(i)
+      } else if (!/^[A-Z]+$/.test(text[i])) {
+        result.push(text[i])
       } else {
-        let letterIdx = text.toUpperCase().charCodeAt(i) - codeA;
-        let shift = key.toUpperCase().charCodeAt(i) - codeA;
+        let letterIdx = text.charCodeAt(i) - codeA;
+        let shift = key.charCodeAt(i) - codeA;
   
         result.push(
           String.fromCharCode( codeA + (letterIdx + shift) % abcCount )
         );
+      
       }
     }
+
+    if (this.reverse) result.reverse().join(''); 
   
     return result.join('');
   }
@@ -64,15 +77,20 @@ class VigenereCipheringMachine {
     for (let i = 0; i < text.length; i++) {
       if (text[i] === ' ') {
         result.push(text[i]);
+        key = key.substr(0, i) + ' ' + key.substr(i)
+      } else if (!/^[A-Z]+$/.test(text[i])) {
+        result.push(text[i])
       } else {
-        let letterIdx = text.toUpperCase().charCodeAt(i) - codeA;
-        let shift = key.toUpperCase().charCodeAt(i) - codeA;
+        let letterIdx = text.charCodeAt(i) - codeA;
+        let shift = key.charCodeAt(i) - codeA;
   
         result.push(
           String.fromCharCode( codeA + (letterIdx - shift + abcCount) % abcCount )
         );
       }
     }
+
+    if (this.reverse) result.reverse().join(''); 
   
     return result.join('');
   }
