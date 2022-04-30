@@ -73,7 +73,9 @@ class VigenereCipheringMachine {
     let abcCount = 26;
   
     let result = [];
-  
+    text = text.toUpperCase()
+    key = key.toUpperCase()
+    
     for (let i = 0; i < text.length; i++) {
       if (text[i] === ' ') {
         result.push(text[i]);
